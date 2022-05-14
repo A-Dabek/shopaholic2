@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ShoppingItem } from '@/features/planning/types';
+import type { ShoppingItem } from '@/types';
 import { computed } from 'vue';
 
 interface Props {

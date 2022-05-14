@@ -39,11 +39,11 @@
 </template>
 
 <script setup lang="ts">
-import ListItem from '@/features/planning/ListItem.vue';
-import type { ShoppingItem, ShoppingList } from '@/features/planning/types';
+import ListItem from '@/components/planning/ListItem.vue';
 import { ref } from 'vue';
-import ListItemForm from '@/features/planning/ListItemForm.vue';
-import ListOptions from '@/features/planning/ListOptions.vue';
+import ListItemForm from '@/components/planning/ListItemForm.vue';
+import ListOptions from '@/components/planning/ListOptions.vue';
+import type { ShoppingItem, ShoppingList } from '@/types';
 
 interface Props {
   list: ShoppingList;

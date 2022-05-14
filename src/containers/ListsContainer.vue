@@ -1,6 +1,11 @@
 <template>
-  <div class="block">
-    <ListForm @newList="store.addList"></ListForm>
+  <div class="columns is-mobile">
+    <div class="column is-narrow">
+      <button class="button is-dark" @click="goToShopping">Shopping</button>
+    </div>
+    <div class="column">
+      <ListForm @newList="store.addList"></ListForm>
+    </div>
   </div>
   <ListComponent
     v-for="list in store.lists"
@@ -16,9 +21,15 @@
 </template>
 
 <script setup lang="ts">
-import ListComponent from '@/features/planning/ListComponent.vue';
-import ListForm from '@/features/planning/ListForm.vue';
+import ListComponent from '@/components/planning/ListComponent.vue';
+import ListForm from '@/components/planning/ListForm.vue';
 import { usePlanningStore } from '@/stores/planning.store';
+import { useRouter } from 'vue-router';
 
 let store = usePlanningStore();
+const router = useRouter();
+
+function goToShopping() {
+  router.push('/shopping');
+}
 </script>

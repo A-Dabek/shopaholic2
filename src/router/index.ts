@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import PlanningView from '../features/planning/PlanningView.vue';
+import PlanningView from '../views/PlanningView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +8,11 @@ const router = createRouter({
       path: '/',
       name: 'planning',
       component: PlanningView,
+    },
+    {
+      path: '/shopping',
+      name: 'shopping',
+      component: () => import('../views/ShoppingView.vue'),
     },
   ],
 });

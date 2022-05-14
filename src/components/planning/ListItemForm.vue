@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { QuantityType, ShoppingItem } from '@/features/planning/types';
+import type { QuantityType, ShoppingItem } from '@/types';
 
 interface Emits {
   (e: 'newItem', item: ShoppingItem): void;
