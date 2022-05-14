@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <span @click="onClear">Clear</span>
-    <span @click="onRemove">X remove</span>
+  <div class="buttons">
+    <button class="button is-text" @click="onClear">Clear</button>
+    <button class="button is-text" @click="onRemove">Remove</button>
   </div>
 </template>
 
@@ -18,5 +18,9 @@ function onRemove() {
 
 function onClear() {
   emits('clear');
+}
+
+function onBack() {
+  emits('back');
 }
 </script>

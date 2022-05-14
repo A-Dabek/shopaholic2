@@ -1,9 +1,16 @@
 <template>
   <li>
-    <label>{{ item.name }}</label>
-    <span>2 days</span>
-    <span>{{ item.quantity }}{{ item.quantityType }}</span>
-    <p>{{ item.description }}</p>
+    <div class="columns is-mobile is-multiline is-gapless">
+      <div class="column">
+        <label>{{ item.name }}</label>
+      </div>
+      <div class="column is-narrow">
+        <span>{{ item.quantity }}{{ item.quantityType }}</span>
+      </div>
+      <div class="column is-full">
+        <small>{{ item.description }}</small>
+      </div>
+    </div>
   </li>
 </template>
 

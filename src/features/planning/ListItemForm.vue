@@ -1,26 +1,21 @@
 <template>
   <form @submit.prevent="onSubmit">
     <div class="field">
-      <input
-        class="input is-small"
-        v-model="name"
-        type="text"
-        placeholder="Name"
-      />
+      <input class="input" v-model="name" type="text" placeholder="Name" />
     </div>
     <div class="field is-grouped">
-      <div class="control">
+      <div class="control is-expanded">
         <input
-          class="input is-small"
+          class="input"
           v-model="quantity"
           type="number"
           placeholder="Quantity"
         />
       </div>
       <div class="control">
-        <div class="select is-small">
-          <select>
-            <option v-for="type in quantityTypes" :key="type">
+        <div class="select">
+          <select v-model="quantityType">
+            <option v-for="type in quantityTypes" :key="type" :value="type">
               {{ type }}
             </option>
           </select>
@@ -30,13 +25,16 @@
     <div class="field">
       <div class="control">
         <textarea
-          class="textarea is-small"
+          class="textarea"
           v-model="description"
           placeholder="Description"
         ></textarea>
       </div>
     </div>
-    <button class="button is-primary is-small" type="submit">Submit</button>
+    <div class="buttons is-justify-content-end">
+      <button class="button is-white" @click="onCancel">Back</button>
+      <button class="button is-primary" type="submit">Save</button>
+    </div>
   </form>
 </template>
 
@@ -46,6 +44,7 @@ import type { QuantityType, ShoppingItem } from '@/features/planning/types';
 
 interface Emits {
   (e: 'newItem', item: ShoppingItem): void;
+  (e: 'cancel'): void;
 }
 const emits = defineEmits<Emits>();
 
@@ -67,5 +66,9 @@ function onSubmit() {
   description.value = '';
   quantity.value = 1;
   quantityType.value = 'x';
+}
+
+function onCancel() {
+  emits('cancel');
 }
 </script>
