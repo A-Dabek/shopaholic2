@@ -1,10 +1,20 @@
 <template>
-  <ListComponent v-for="list in lists" :name="list" :key="list"></ListComponent>
+  <ListComponent
+    v-for="list in lists"
+    :name="list"
+    :key="list"
+    @remove="onRemove(list)"
+  ></ListComponent>
 </template>
 
 <script setup lang="ts">
 import ListComponent from '@/features/planning/ListComponent.vue';
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
-const lists = reactive(['List1', 'List2', 'List3']);
+let lists = ref(['List1', 'List2', 'List3']);
+
+function onRemove(name: string) {
+  console.log('REMOVAL', name);
+  lists.value = lists.value.filter((n) => n !== name);
+}
 </script>
