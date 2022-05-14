@@ -1,12 +1,13 @@
 <template>
   <div>
     <h1>{{ list.name }}</h1>
-    <ListItemForm v-if="isFormOpen" @newItem="onNewItem" />
+    <ListOptions v-if="isOptionsOpen" @remove="onRemove" @clear="onClear" />
+    <ListItemForm v-else-if="isFormOpen" @newItem="onNewItem" />
     <div v-else>
       <ol>
         <ListItem v-for="item in list.items" :key="item.name" :item="item" />
       </ol>
-      <span @click="onRemove">X remove</span>
+      <span @click="onOpenOptions">Options</span>
       <span @click="onOpenForm">+ Add</span>
     </div>
   </div>
@@ -17,6 +18,7 @@ import ListItem from '@/features/planning/ListItem.vue';
 import type { ShoppingItem, ShoppingList } from '@/features/planning/types';
 import { ref } from 'vue';
 import ListItemForm from '@/features/planning/ListItemForm.vue';
+import ListOptions from '@/features/planning/ListOptions.vue';
 
 interface Props {
   list: ShoppingList;
@@ -24,13 +26,25 @@ interface Props {
 defineProps<Props>();
 
 interface Emits {
-  (e: 'remove'): void;
   (e: 'newItem', item: ShoppingItem): void;
+  (e: 'clear'): void;
+  (e: 'remove'): void;
 }
 const emits = defineEmits<Emits>();
 
+let isOptionsOpen = ref(false);
+function onOpenOptions() {
+  isOptionsOpen.value = true;
+}
+
 function onRemove() {
   emits('remove');
+  isOptionsOpen.value = false;
+}
+
+function onClear() {
+  emits('clear');
+  isOptionsOpen.value = false;
 }
 
 let isFormOpen = ref(false);

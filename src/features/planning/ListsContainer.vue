@@ -4,6 +4,7 @@
     :list="list"
     :key="list.name"
     @remove="onRemove(list.name)"
+    @clear="onClear(list.name)"
     @newItem="onNewItem(list.name, $event)"
   ></ListComponent>
   <ListForm @newList="onNewList"></ListForm>
@@ -38,10 +39,6 @@ let lists = ref<ShoppingList[]>([
   },
 ]);
 
-function onRemove(name: string) {
-  lists.value = lists.value.filter(list => list.name !== name);
-}
-
 function onNewList(name: string) {
   lists.value = [...lists.value, { name: name, items: [] }];
 }
@@ -51,5 +48,16 @@ function onNewItem(name: string, item: ShoppingItem) {
     if (list.name !== name) return list;
     return { ...list, items: [...list.items, item] };
   });
+}
+
+function onClear(name: string) {
+  lists.value = lists.value.map(list => {
+    if (list.name !== name) return list;
+    return { ...list, items: [] };
+  });
+}
+
+function onRemove(name: string) {
+  lists.value = lists.value.filter(list => list.name !== name);
 }
 </script>
