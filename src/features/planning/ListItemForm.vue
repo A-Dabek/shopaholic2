@@ -1,18 +1,42 @@
 <template>
   <form @submit.prevent="onSubmit">
-    <input type="text" v-model="name" />
-    <input type="number" v-model="quantity" />
-    <ul>
-      <li
-        v-for="type in quantityTypes"
-        :key="type"
-        @click="quantityType = type"
-      >
-        {{ type }}
-      </li>
-    </ul>
-    <textarea v-model="description" />
-    <button type="submit">Submit</button>
+    <div class="field">
+      <input
+        class="input is-small"
+        v-model="name"
+        type="text"
+        placeholder="Name"
+      />
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <input
+          class="input is-small"
+          v-model="quantity"
+          type="number"
+          placeholder="Quantity"
+        />
+      </div>
+      <div class="control">
+        <div class="select is-small">
+          <select>
+            <option v-for="type in quantityTypes" :key="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <textarea
+          class="textarea is-small"
+          v-model="description"
+          placeholder="Description"
+        ></textarea>
+      </div>
+    </div>
+    <button class="button is-primary is-small" type="submit">Submit</button>
   </form>
 </template>
 

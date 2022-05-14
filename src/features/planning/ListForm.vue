@@ -1,7 +1,18 @@
 <template>
   <form @submit.prevent="onSubmit">
-    <input type="text" v-model="name" />
-    <button type="submit">Submit</button>
+    <div class="field is-grouped">
+      <p class="control is-expanded">
+        <input
+          class="input is-small"
+          v-model="name"
+          type="text"
+          placeholder="Name"
+        />
+      </p>
+      <p class="control">
+        <button class="button is-small is-primary" type="submit">Submit</button>
+      </p>
+    </div>
   </form>
 </template>
 
