@@ -9,6 +9,9 @@
     @remove="onRemove(list.name)"
     @clear="onClear(list.name)"
     @newItem="onNewItem(list.name, $event)"
+    @increment="onIncrement(list.name, $event)"
+    @decrement="onDecrement(list.name, $event)"
+    @removeItem="onRemoveItem(list.name, $event)"
   ></ListComponent>
 </template>
 
@@ -28,6 +31,7 @@ let lists = ref<ShoppingList[]>([
         quantity: 23,
         quantityType: 'kg',
         timestamp: new Date().getTime(),
+        urgent: false,
       },
       {
         name: 'item2',
@@ -35,6 +39,7 @@ let lists = ref<ShoppingList[]>([
         quantity: 23,
         quantityType: 'kg',
         timestamp: new Date().getTime(),
+        urgent: false,
       },
       {
         name: 'item3',
@@ -42,6 +47,7 @@ let lists = ref<ShoppingList[]>([
         quantity: 23,
         quantityType: 'kg',
         timestamp: new Date().getTime(),
+        urgent: false,
       },
       {
         name: 'item4',
@@ -49,6 +55,7 @@ let lists = ref<ShoppingList[]>([
         quantity: 23,
         quantityType: 'kg',
         timestamp: new Date().getTime(),
+        urgent: false,
       },
     ],
   },
@@ -82,5 +89,33 @@ function onClear(name: string) {
 
 function onRemove(name: string) {
   lists.value = lists.value.filter(list => list.name !== name);
+}
+
+function onIncrement(list: string, item: string) {
+  lists.value = lists.value.map(l => {
+    if (l.name !== list) return l;
+    const items = l.items.map(i => {
+      if (i.name !== item) return i;
+      return { ...i, quantity: i.quantity + 1 };
+    });
+    return { ...l, items };
+  });
+}
+function onDecrement(list: string, item: string) {
+  lists.value = lists.value.map(l => {
+    if (l.name !== list) return l;
+    const items = l.items.map(i => {
+      if (i.name !== item) return i;
+      return { ...i, quantity: i.quantity - 1 };
+    });
+    return { ...l, items };
+  });
+}
+function onRemoveItem(list: string, item: string) {
+  lists.value = lists.value.map(l => {
+    if (l.name !== list) return l;
+    const items = l.items.filter(i => i.name !== item);
+    return { ...l, items };
+  });
 }
 </script>

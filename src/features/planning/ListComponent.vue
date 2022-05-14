@@ -17,8 +17,17 @@
       @cancel="isFormOpen = false"
     />
     <div v-else>
-      <ol class="is-full">
-        <ListItem v-for="item in list.items" :key="item.name" :item="item" />
+      <ol class="is-full mx-0 mt-0">
+        <ListItem
+          v-for="item in list.items"
+          :key="item.name"
+          :item="item"
+          :expanded="expanded === item.name"
+          @click="onExpand(item.name)"
+          @increment="emits('increment', item.name)"
+          @decrement="emits('decrement', item.name)"
+          @remove="emits('removeItem', item.name)"
+        />
       </ol>
       <div class="has-text-right">
         <button class="button is-primary is-rounded" @click="onOpenForm">
@@ -44,10 +53,11 @@ defineProps<Props>();
 
 interface Emits {
   (e: 'newItem', item: ShoppingItem): void;
-
   (e: 'clear'): void;
-
   (e: 'remove'): void;
+  (e: 'increment', item: string): void;
+  (e: 'decrement', item: string): void;
+  (e: 'removeItem', item: string): void;
 }
 
 const emits = defineEmits<Emits>();
@@ -78,4 +88,15 @@ function onNewItem(item: ShoppingItem) {
   emits('newItem', item);
   isFormOpen.value = false;
 }
+
+let expanded = ref('');
+function onExpand(name: string) {
+  expanded.value = expanded.value === name ? '' : name;
+}
 </script>
+
+<style scoped>
+ol {
+  list-style: none !important;
+}
+</style>

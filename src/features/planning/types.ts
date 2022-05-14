@@ -6,6 +6,7 @@ export interface ShoppingItem {
   timestamp: number;
   quantity: number;
   quantityType: QuantityType;
+  urgent: boolean;
 }
 
 export interface ShoppingList {

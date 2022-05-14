@@ -21,6 +21,12 @@
           </select>
         </div>
       </div>
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" v-model="urgent" />
+          Urgent
+        </label>
+      </div>
     </div>
     <div class="field">
       <div class="control">
@@ -53,6 +59,7 @@ let name = ref('');
 let description = ref('');
 let quantity = ref(1);
 let quantityType = ref<QuantityType>('x');
+let urgent = ref(false);
 
 function onSubmit() {
   emits('newItem', {
@@ -61,11 +68,13 @@ function onSubmit() {
     quantity: quantity.value,
     quantityType: quantityType.value,
     timestamp: new Date().getTime(),
+    urgent: urgent.value,
   });
   name.value = '';
   description.value = '';
   quantity.value = 1;
   quantityType.value = 'x';
+  urgent.value = false;
 }
 
 function onCancel() {
