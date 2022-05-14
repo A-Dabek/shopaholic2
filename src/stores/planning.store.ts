@@ -48,10 +48,14 @@ export const usePlanningStore = defineStore({
       }));
     },
     addItemToList(listName: string, item: ShoppingItem) {
-      this.lists = modifyList(this.lists, listName, list => ({
-        ...list,
-        items: [...list.items, item],
-      }));
+      this.lists = modifyList(this.lists, listName, list => {
+        const items = [...list.items, item];
+        items.sort((a, b) => a.name.localeCompare(b.name));
+        return {
+          ...list,
+          items,
+        };
+      });
     },
     removeItemFromList(listName: string, itemName: string) {
       this.lists = modifyList(this.lists, listName, list => ({
