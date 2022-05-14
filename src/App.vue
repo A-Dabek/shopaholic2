@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <main class="m-1">
+  <main class="container is-max-widescreen p-1">
     <RouterView />
   </main>
 </template>
