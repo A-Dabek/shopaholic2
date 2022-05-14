@@ -9,6 +9,9 @@ module.exports = {
     "@vue/eslint-config-typescript/recommended",
     "@vue/eslint-config-prettier"
   ],
+  "rules": {
+    "arrow-parens": ["warn", "as-needed"]
+  },
   "env": {
     "vue/setup-compiler-macros": true
   }

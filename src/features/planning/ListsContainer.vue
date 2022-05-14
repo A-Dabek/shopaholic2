@@ -1,25 +1,55 @@
 <template>
   <ListComponent
     v-for="list in lists"
-    :name="list"
-    :key="list"
-    @remove="onRemove(list)"
+    :list="list"
+    :key="list.name"
+    @remove="onRemove(list.name)"
+    @newItem="onNewItem(list.name, $event)"
   ></ListComponent>
-  <ListForm @newList="onNewList($event)"></ListForm>
+  <ListForm @newList="onNewList"></ListForm>
 </template>
 
 <script setup lang="ts">
 import ListComponent from '@/features/planning/ListComponent.vue';
 import { ref } from 'vue';
 import ListForm from '@/features/planning/ListForm.vue';
+import type { ShoppingItem, ShoppingList } from '@/features/planning/types';
 
-let lists = ref(['List1', 'List2', 'List3']);
+let lists = ref<ShoppingList[]>([
+  {
+    name: 'List1',
+    items: [
+      {
+        name: 'item1',
+        description: 'desc rip tion 1',
+        quantity: 23,
+        quantityType: 'kg',
+        timestamp: new Date().getTime(),
+      } as ShoppingItem,
+    ],
+  },
+  {
+    name: 'List2',
+    items: [],
+  },
+  {
+    name: 'List3',
+    items: [],
+  },
+]);
 
 function onRemove(name: string) {
-  lists.value = lists.value.filter((n) => n !== name);
+  lists.value = lists.value.filter(list => list.name !== name);
 }
 
 function onNewList(name: string) {
-  lists.value = [...lists.value, name];
+  lists.value = [...lists.value, { name: name, items: [] }];
+}
+
+function onNewItem(name: string, item: ShoppingItem) {
+  lists.value = lists.value.map(list => {
+    if (list.name !== name) return list;
+    return { ...list, items: [...list.items, item] };
+  });
 }
 </script>
