@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>{{ list.name }}</h1>
+  <div class="box content">
+    <h1 class="title is-5 mb-0">{{ list.name }}</h1>
     <ListOptions v-if="isOptionsOpen" @remove="onRemove" @clear="onClear" />
     <ListItemForm v-else-if="isFormOpen" @newItem="onNewItem" />
     <div v-else>

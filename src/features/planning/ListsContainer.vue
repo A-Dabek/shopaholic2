@@ -1,4 +1,7 @@
 <template>
+  <div class="block">
+    <ListForm @newList="onNewList"></ListForm>
+  </div>
   <ListComponent
     v-for="list in lists"
     :list="list"
@@ -7,7 +10,6 @@
     @clear="onClear(list.name)"
     @newItem="onNewItem(list.name, $event)"
   ></ListComponent>
-  <ListForm @newList="onNewList"></ListForm>
 </template>
 
 <script setup lang="ts">

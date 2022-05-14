@@ -3,14 +3,14 @@
     <div class="field is-grouped">
       <p class="control is-expanded">
         <input
-          class="input is-small"
+          class="input"
           v-model="name"
           type="text"
-          placeholder="Name"
+          placeholder="List name"
         />
       </p>
       <p class="control">
-        <button class="button is-small is-primary" type="submit">Submit</button>
+        <button class="button is-primary" type="submit">Add</button>
       </p>
     </div>
   </form>
