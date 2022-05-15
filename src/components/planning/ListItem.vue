@@ -11,7 +11,7 @@
           class="tag mr-1"
           >{{ item.urgent ? '!' : daysPassed }}</span
         >
-        <label>{{ item.name }}</label>
+        <label :class="{ bought: isBought }">{{ item.name }}</label>
       </div>
       <div class="column is-narrow">
         <span>{{ item.quantity }}{{ item.quantityType }}</span>
@@ -41,6 +41,7 @@ import { computed } from 'vue';
 interface Props {
   item: ShoppingItem;
   expanded: boolean;
+  isBought: boolean;
 }
 interface Emits {
   (e: 'increment'): void;
@@ -64,3 +65,9 @@ const daysPassed = computed(() => {
   return daysBetween(todayDate, itemDate);
 });
 </script>
+
+<style scoped>
+.bought {
+  text-decoration: line-through;
+}
+</style>

@@ -1,22 +1,22 @@
 <template>
   <div class="buttons">
-    <button class="button is-danger" @click="onClear">Clear</button>
-    <button class="button is-black" @click="onRemove">Remove</button>
+    <button class="button is-warning" @click="emits('clearBought')">
+      Clear bought
+    </button>
+    <button class="button is-danger" @click="emits('clearAll')">
+      Clear all
+    </button>
+    <button class="button is-black" @click="emits('remove')">
+      Remove list
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 interface Emits {
-  (e: 'clear'): void;
+  (e: 'clearAll'): void;
+  (e: 'clearBought'): void;
   (e: 'remove'): void;
 }
 const emits = defineEmits<Emits>();
-
-function onRemove() {
-  emits('remove');
-}
-
-function onClear() {
-  emits('clear');
-}
 </script>

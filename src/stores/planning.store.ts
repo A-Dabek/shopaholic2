@@ -65,6 +65,14 @@ export const usePlanningStore = defineStore({
         items: [],
       }));
     },
+    clearBoughtFromList(name: string) {
+      this.lists = modifyList(this.lists, name, list => ({
+        ...list,
+        items: list.items.filter(
+          item => !this.boughtItemsNames.includes(item.name)
+        ),
+      }));
+    },
     addItemToList(listName: string, item: ShoppingItem) {
       this.lists = modifyList(this.lists, listName, list => {
         const items = [...list.items, item];
