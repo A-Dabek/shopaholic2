@@ -2,11 +2,16 @@
   <li>
     <div class="columns is-mobile is-multiline is-gapless">
       <div class="column">
+        <span
+          :class="{
+            'is-invisible': !(item.urgent || daysPassed > 1),
+            'is-danger': item.urgent,
+            'is-warning': daysPassed > 1,
+          }"
+          class="tag mr-1"
+          >{{ item.urgent ? '!' : daysPassed }}</span
+        >
         <label>{{ item.name }}</label>
-        <span v-if="item.urgent" class="ml-1 tag is-danger">!</span>
-        <span v-if="daysPassed > 1" class="ml-1 tag is-warning">{{
-          daysPassed
-        }}</span>
       </div>
       <div class="column is-narrow">
         <span>{{ item.quantity }}{{ item.quantityType }}</span>

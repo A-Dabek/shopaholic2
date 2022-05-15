@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ShoppingItem, ShoppingList } from '@/features/planning/types';
+import type { ShoppingItem, ShoppingList } from '@/types';
 
 function modifyList(
   lists: ShoppingList[],
@@ -32,8 +32,26 @@ export const usePlanningStore = defineStore({
         items: [],
       },
     ] as ShoppingList[],
+    boughtItemsNames: [] as string[],
   }),
-  getters: {},
+  getters: {
+    listItems(state) {
+      return (listName: string) =>
+        state.lists.find(list => list.name === listName)?.items || [];
+    },
+    itemsToBuy(state) {
+      return (listName: string) =>
+        this.listItems(listName).filter(
+          item => !state.boughtItemsNames.includes(item.name)
+        );
+    },
+    itemsBought(state) {
+      return (listName: string) =>
+        this.listItems(listName).filter(item =>
+          state.boughtItemsNames.includes(item.name)
+        );
+    },
+  },
   actions: {
     addList(name: string) {
       this.lists = [...this.lists, { name: name, items: [] }];
@@ -80,6 +98,17 @@ export const usePlanningStore = defineStore({
           quantity: item.quantity - 1,
         })),
       }));
+    },
+    buyItem(itemName: string) {
+      this.boughtItemsNames = [...this.boughtItemsNames, itemName];
+    },
+    undoBuyingItem(itemName: string) {
+      this.boughtItemsNames = this.boughtItemsNames.filter(
+        item => item !== itemName
+      );
+    },
+    resetBuying() {
+      this.boughtItemsNames = [];
     },
   },
 });
