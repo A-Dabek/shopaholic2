@@ -10,7 +10,7 @@ const router = createRouter({
       component: PlanningView,
     },
     {
-      path: '/shopping',
+      path: '/shopping/:name',
       name: 'shopping',
       component: () => import('../views/ShoppingView.vue'),
     },

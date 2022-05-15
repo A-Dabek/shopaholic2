@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ListsContainer from '@/containers/ListsContainer.vue';
+import ShoppingContainer from '@/containers/ShoppingContainer.vue';
 </script>
 
 <template>
-  <ListsContainer />
+  <ShoppingContainer />
 </template>

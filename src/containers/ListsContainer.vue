@@ -1,11 +1,6 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-narrow">
-      <button class="button is-dark" @click="goToShopping">Shopping</button>
-    </div>
-    <div class="column">
-      <ListForm @newList="store.addList"></ListForm>
-    </div>
+  <div class="column">
+    <ListForm @newList="store.addList"></ListForm>
   </div>
   <ListComponent
     v-for="list in store.lists"
@@ -17,6 +12,7 @@
     @increment="store.incrementItemQuantity(list.name, $event)"
     @decrement="store.decrementItemQuantity(list.name, $event)"
     @removeItem="store.removeItemFromList(list.name, $event)"
+    @shopping="goToShopping(list.name)"
   ></ListComponent>
 </template>
 
@@ -29,7 +25,7 @@ import { useRouter } from 'vue-router';
 let store = usePlanningStore();
 const router = useRouter();
 
-function goToShopping() {
-  router.push('/shopping');
+function goToShopping(listName: string) {
+  router.push(`/shopping/${listName}`);
 }
 </script>

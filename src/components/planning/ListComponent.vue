@@ -29,7 +29,10 @@
           @remove="emits('removeItem', item.name)"
         />
       </ol>
-      <div class="has-text-right">
+      <div class="buttons is-justify-content-space-between">
+        <button class="button is-black is-rounded" @click="onShopping">
+          Shopping
+        </button>
         <button class="button is-primary is-rounded" @click="onOpenForm">
           Add
         </button>
@@ -58,6 +61,7 @@ interface Emits {
   (e: 'increment', item: string): void;
   (e: 'decrement', item: string): void;
   (e: 'removeItem', item: string): void;
+  (e: 'shopping'): void;
 }
 
 const emits = defineEmits<Emits>();
@@ -92,6 +96,10 @@ function onNewItem(item: ShoppingItem) {
 let expanded = ref('');
 function onExpand(name: string) {
   expanded.value = expanded.value === name ? '' : name;
+}
+
+function onShopping() {
+  emits('shopping');
 }
 </script>
 
