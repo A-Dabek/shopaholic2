@@ -1,16 +1,6 @@
 import { defineStore } from 'pinia';
 import type { ShoppingItem, ShoppingList } from '@/types';
-
-function modifyItem(
-  items: ShoppingItem[],
-  itemName: string,
-  mapper: (item: ShoppingItem) => ShoppingItem
-) {
-  return items.map(item => {
-    if (item.name !== itemName) return item;
-    return mapper(item);
-  });
-}
+import { cloudStore } from '@/stores/firebase.store';
 
 export const usePlanningStore = defineStore({
   id: 'planning',
@@ -42,61 +32,45 @@ export const usePlanningStore = defineStore({
     },
   },
   actions: {
-    addList(name: string) {
-      this.listNames = [
-        ...this.listNames,
-        { name: name, timestamp: new Date().getTime() },
-      ];
-      this.itemsPerList[name] = [];
-    },
-    removeList(name: string) {
-      this.listNames = this.listNames.filter(list => list.name !== name);
-      this.itemsPerList[name] = [];
-    },
-    clearList(name: string) {
-      this.itemsPerList[name] = [];
-    },
-    clearBoughtFromList(name: string) {
-      this.itemsPerList[name] = this.itemsPerList[name].filter(
-        item => !this.boughtItemsNames.includes(item.name)
-      );
-    },
-    addItemToList(listName: string, item: ShoppingItem) {
-      this.itemsPerList[listName] = [...this.itemsPerList[listName], item];
-    },
-    removeItemFromList(listName: string, itemName: string) {
-      this.itemsPerList[listName] = this.itemsPerList[listName].filter(
-        item => item.name !== itemName
-      );
-    },
-    incrementItemQuantity(listName: string, itemName: string) {
-      this.itemsPerList[listName] = modifyItem(
-        this.itemsPerList[listName],
-        itemName,
-        item => ({
-          ...item,
-          quantity: item.quantity + 1,
-        })
-      );
-    },
-    decrementItemQuantity(listName: string, itemName: string) {
-      this.itemsPerList[listName] = modifyItem(
-        this.itemsPerList[listName],
-        itemName,
-        item => ({
-          ...item,
-          quantity: item.quantity - 1,
-        })
-      );
-    },
     setLists(listNames: ShoppingList[]) {
       this.listNames = [...listNames];
     },
     setItems(listName: string, items: ShoppingItem[]) {
       this.itemsPerList[listName] = [...items];
     },
+    addItemToList(listName: string, item: ShoppingItem) {
+      cloudStore.setItem(listName, item);
+    },
+    removeItemFromList(listName: string, itemName: string) {
+      cloudStore.deleteItem(listName, itemName);
+    },
+    incrementItemQuantity(listName: string, itemName: string) {
+      const item = this.itemsPerList[listName].find(i => i.name === itemName);
+      if (!item) return;
+      cloudStore.setItem(listName, { ...item, quantity: item.quantity + 1 });
+    },
+    decrementItemQuantity(listName: string, itemName: string) {
+      const item = this.itemsPerList[listName].find(i => i.name === itemName);
+      if (!item) return;
+      cloudStore.setItem(listName, { ...item, quantity: item.quantity - 1 });
+    },
+    clearList(name: string) {
+      this.itemsPerList[name].forEach(item => {
+        cloudStore.deleteItem(name, item.name);
+      });
+    },
     setBoughtItems(boughtItemsNames: string[]) {
       this.boughtItemsNames = [...boughtItemsNames];
+    },
+    resetBuying() {
+      this.boughtItemsNames.forEach(boughtItem => {
+        cloudStore.undoBuyingItem(boughtItem);
+      });
+    },
+    clearBoughtFromList(name: string) {
+      this.itemsPerList[name]
+        .filter(item => this.boughtItemsNames.includes(item.name))
+        .forEach(item => cloudStore.deleteItem(name, item.name));
     },
   },
 });

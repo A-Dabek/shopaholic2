@@ -3,7 +3,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
   getFirestore,
   onSnapshot,
   setDoc,
@@ -22,6 +21,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const getListName = (name: string) => `_list_${name}`;
 
 export const cloudStore = {
   onBoughtSnapshot: (callback: (boughtItemsNames: string[]) => void) => {
@@ -34,12 +34,6 @@ export const cloudStore = {
   },
   async undoBuyingItem(name: string) {
     await deleteDoc(doc(db, 'bought', name));
-  },
-  async resetBuying() {
-    const querySnapshot = await getDocs(collection(db, 'bought'));
-    querySnapshot.forEach(document => {
-      deleteDoc(doc(db, 'bought', document.id));
-    });
   },
   onListsSnapshot: (callback: (lists: ShoppingList[]) => void) => {
     return onSnapshot(collection(db, 'lists'), collection => {
@@ -61,7 +55,7 @@ export const cloudStore = {
     listName: string,
     callback: (items: ShoppingItem[]) => void
   ) => {
-    return onSnapshot(collection(db, `_list_${listName}`), collection => {
+    return onSnapshot(collection(db, getListName(listName)), collection => {
       callback(
         collection.docs.map(
           doc =>
@@ -72,5 +66,11 @@ export const cloudStore = {
         )
       );
     });
+  },
+  async deleteItem(listName: string, itemName: string) {
+    await deleteDoc(doc(db, getListName(listName), itemName));
+  },
+  async setItem(listName: string, item: ShoppingItem) {
+    await setDoc(doc(db, getListName(listName), item.name), item);
   },
 };

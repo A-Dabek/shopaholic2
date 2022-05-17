@@ -4,7 +4,7 @@
       <button class="button is-primary" @click="router.push('/')">
         Planning
       </button>
-      <button class="button is-warning" @click="cStore.resetBuying()">
+      <button class="button is-warning" @click="store.resetBuying()">
         Reset
       </button>
     </div>

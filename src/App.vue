@@ -11,16 +11,19 @@ import { cloudStore } from '@/stores/firebase.store';
 import { usePlanningStore } from '@/stores/planning.store';
 
 const store = usePlanningStore();
+
 watchEffect(onCleanup => {
   const unsub = cloudStore.onBoughtSnapshot(items =>
     store.setBoughtItems(items)
   );
   onCleanup(unsub);
 });
+
 watchEffect(onCleanup => {
   const unsub = cloudStore.onListsSnapshot(items => store.setLists(items));
   onCleanup(unsub);
 });
+
 watchEffect(onCleanup => {
   const unsubs = store.orderedListNames.map(listName =>
     cloudStore.onItemsSnapshot(listName, items =>
