@@ -1,7 +1,14 @@
 <template>
   <form @submit.prevent="onSubmit">
     <div class="field">
-      <input class="input" v-model="name" type="text" placeholder="Name" />
+      <input
+        class="input"
+        autofocus
+        ref="nameInput"
+        v-model="name"
+        type="text"
+        placeholder="Name"
+      />
     </div>
     <div class="field is-grouped">
       <div class="control is-expanded">
@@ -45,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { QuantityType, ShoppingItem } from '@/types';
 
 interface Emits {
@@ -54,12 +61,17 @@ interface Emits {
 }
 const emits = defineEmits<Emits>();
 
+let nameInput = ref<HTMLInputElement>();
 let quantityTypes = ref<QuantityType[]>(['x', 'kg', 'g', 'ml', 'l']);
 let name = ref('');
 let description = ref('');
 let quantity = ref(1);
 let quantityType = ref<QuantityType>('x');
 let urgent = ref(false);
+
+onMounted(() => {
+  nameInput.value?.focus();
+});
 
 function onSubmit() {
   emits('newItem', {
