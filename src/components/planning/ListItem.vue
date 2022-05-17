@@ -16,7 +16,7 @@
       <div class="column is-narrow">
         <span>{{ item.quantity }}{{ item.quantityType }}</span>
       </div>
-      <div class="column is-full">
+      <div class="column is-offset-2 is-10">
         <small>{{ item.description }}</small>
       </div>
       <template v-if="expanded">

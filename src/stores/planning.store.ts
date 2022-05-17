@@ -26,12 +26,7 @@ function modifyItem(
 export const usePlanningStore = defineStore({
   id: 'planning',
   state: () => ({
-    lists: [
-      {
-        name: 'List2',
-        items: [],
-      },
-    ] as ShoppingList[],
+    lists: [] as ShoppingList[],
     boughtItemsNames: [] as string[],
   }),
   getters: {
