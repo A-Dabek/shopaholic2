@@ -8,6 +8,7 @@ import {
   onSnapshot,
   setDoc,
 } from 'firebase/firestore';
+import type { ShoppingItem, ShoppingList } from '@/types';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCgY5DET3HhstK6MVtciRXAqK_c1aC6vdU',
@@ -28,16 +29,48 @@ export const cloudStore = {
       callback(collection.docs.map(doc => doc.id));
     });
   },
-  async buyItem(itemName: string) {
-    await setDoc(doc(db, 'bought', itemName), {});
+  async buyItem(name: string) {
+    await setDoc(doc(db, 'bought', name), {});
   },
-  async undoBuyingItem(itemName: string) {
-    await deleteDoc(doc(db, 'bought', itemName));
+  async undoBuyingItem(name: string) {
+    await deleteDoc(doc(db, 'bought', name));
   },
   async resetBuying() {
     const querySnapshot = await getDocs(collection(db, 'bought'));
     querySnapshot.forEach(document => {
       deleteDoc(doc(db, 'bought', document.id));
+    });
+  },
+  onListsSnapshot: (callback: (lists: ShoppingList[]) => void) => {
+    return onSnapshot(collection(db, 'lists'), collection => {
+      callback(
+        collection.docs.map(doc => ({
+          name: doc.id,
+          timestamp: doc.data().timestamp,
+        }))
+      );
+    });
+  },
+  async addList(name: string) {
+    await setDoc(doc(db, 'lists', name), { timestamp: new Date().getTime() });
+  },
+  async removeList(name: string) {
+    await deleteDoc(doc(db, 'lists', name));
+  },
+  onItemsSnapshot: (
+    listName: string,
+    callback: (items: ShoppingItem[]) => void
+  ) => {
+    return onSnapshot(collection(db, `_list_${listName}`), collection => {
+      callback(
+        collection.docs.map(
+          doc =>
+            ({
+              name: doc.id,
+              ...doc.data(),
+            } as ShoppingItem)
+        )
+      );
     });
   },
 };

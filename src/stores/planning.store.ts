@@ -89,6 +89,12 @@ export const usePlanningStore = defineStore({
         })
       );
     },
+    setLists(listNames: ShoppingList[]) {
+      this.listNames = [...listNames];
+    },
+    setItems(listName: string, items: ShoppingItem[]) {
+      this.itemsPerList[listName] = [...items];
+    },
     setBoughtItems(boughtItemsNames: string[]) {
       this.boughtItemsNames = [...boughtItemsNames];
     },
