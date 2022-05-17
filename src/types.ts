@@ -11,5 +11,5 @@ export interface ShoppingItem {
 
 export interface ShoppingList {
   name: string;
-  items: ShoppingItem[];
+  timestamp: number;
 }

@@ -2,7 +2,7 @@
   <div class="box content">
     <div class="columns is-mobile">
       <div class="column">
-        <h1 class="title is-5">{{ list.name }}</h1>
+        <h1 class="title is-5">{{ name }}</h1>
       </div>
       <div class="column is-narrow">
         <button
@@ -27,7 +27,7 @@
     <div v-else>
       <ol class="is-full mx-0 mt-0">
         <ListItem
-          v-for="item in list.items"
+          v-for="item in items"
           :key="item.name"
           :item="item"
           :expanded="expanded === item.name"
@@ -55,10 +55,11 @@ import ListItem from '@/components/planning/ListItem.vue';
 import { ref } from 'vue';
 import ListItemForm from '@/components/planning/ListItemForm.vue';
 import ListOptions from '@/components/planning/ListOptions.vue';
-import type { ShoppingItem, ShoppingList } from '@/types';
+import type { ShoppingItem } from '@/types';
 
 interface Props {
-  list: ShoppingList;
+  name: string;
+  items: ShoppingItem[];
   boughtItemsNames: string[];
 }
 

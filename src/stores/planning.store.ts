@@ -1,17 +1,6 @@
 import { defineStore } from 'pinia';
 import type { ShoppingItem, ShoppingList } from '@/types';
 
-function modifyList(
-  lists: ShoppingList[],
-  listName: string,
-  mapper: (list: ShoppingList) => ShoppingList
-) {
-  return lists.map(list => {
-    if (list.name !== listName) return list;
-    return mapper(list);
-  });
-}
-
 function modifyItem(
   items: ShoppingItem[],
   itemName: string,
@@ -26,13 +15,18 @@ function modifyItem(
 export const usePlanningStore = defineStore({
   id: 'planning',
   state: () => ({
-    lists: [] as ShoppingList[],
+    listNames: [] as ShoppingList[],
+    itemsPerList: {} as Record<string, ShoppingItem[]>,
     boughtItemsNames: [] as string[],
   }),
   getters: {
+    orderedListNames(state) {
+      const listNames = [...state.listNames];
+      listNames.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+      return listNames.map(ln => ln.name);
+    },
     listItems(state) {
-      return (listName: string) =>
-        state.lists.find(list => list.name === listName)?.items || [];
+      return (listName: string) => state.itemsPerList[listName] || [];
     },
     itemsToBuy(state) {
       return (listName: string) =>
@@ -49,58 +43,51 @@ export const usePlanningStore = defineStore({
   },
   actions: {
     addList(name: string) {
-      this.lists = [...this.lists, { name: name, items: [] }];
+      this.listNames = [
+        ...this.listNames,
+        { name: name, timestamp: new Date().getTime() },
+      ];
+      this.itemsPerList[name] = [];
     },
     removeList(name: string) {
-      this.lists = this.lists.filter(list => list.name !== name);
+      this.listNames = this.listNames.filter(list => list.name !== name);
+      this.itemsPerList[name] = [];
     },
     clearList(name: string) {
-      this.lists = modifyList(this.lists, name, list => ({
-        ...list,
-        items: [],
-      }));
+      this.itemsPerList[name] = [];
     },
     clearBoughtFromList(name: string) {
-      this.lists = modifyList(this.lists, name, list => ({
-        ...list,
-        items: list.items.filter(
-          item => !this.boughtItemsNames.includes(item.name)
-        ),
-      }));
+      this.itemsPerList[name] = this.itemsPerList[name].filter(
+        item => !this.boughtItemsNames.includes(item.name)
+      );
     },
     addItemToList(listName: string, item: ShoppingItem) {
-      this.lists = modifyList(this.lists, listName, list => {
-        const items = [...list.items, item];
-        items.sort((a, b) => a.name.localeCompare(b.name));
-        return {
-          ...list,
-          items,
-        };
-      });
+      this.itemsPerList[listName] = [...this.itemsPerList[listName], item];
     },
     removeItemFromList(listName: string, itemName: string) {
-      this.lists = modifyList(this.lists, listName, list => ({
-        ...list,
-        items: list.items.filter(item => item.name !== itemName),
-      }));
+      this.itemsPerList[listName] = this.itemsPerList[listName].filter(
+        item => item.name !== itemName
+      );
     },
     incrementItemQuantity(listName: string, itemName: string) {
-      this.lists = modifyList(this.lists, listName, list => ({
-        ...list,
-        items: modifyItem(list.items, itemName, item => ({
+      this.itemsPerList[listName] = modifyItem(
+        this.itemsPerList[listName],
+        itemName,
+        item => ({
           ...item,
           quantity: item.quantity + 1,
-        })),
-      }));
+        })
+      );
     },
     decrementItemQuantity(listName: string, itemName: string) {
-      this.lists = modifyList(this.lists, listName, list => ({
-        ...list,
-        items: modifyItem(list.items, itemName, item => ({
+      this.itemsPerList[listName] = modifyItem(
+        this.itemsPerList[listName],
+        itemName,
+        item => ({
           ...item,
           quantity: item.quantity - 1,
-        })),
-      }));
+        })
+      );
     },
     setBoughtItems(boughtItemsNames: string[]) {
       this.boughtItemsNames = [...boughtItemsNames];

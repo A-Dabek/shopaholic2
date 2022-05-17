@@ -3,18 +3,19 @@
     <ListForm @newList="store.addList"></ListForm>
   </div>
   <ListComponent
-    v-for="list in store.lists"
-    :list="list"
-    :key="list.name"
+    v-for="name in store.orderedListNames"
+    :key="name"
+    :name="name"
+    :items="store.listItems(name)"
     :boughtItemsNames="store.boughtItemsNames"
-    @remove="store.removeList(list.name)"
-    @clearAll="store.clearList(list.name)"
-    @clearBought="store.clearBoughtFromList(list.name)"
-    @newItem="store.addItemToList(list.name, $event)"
-    @increment="store.incrementItemQuantity(list.name, $event)"
-    @decrement="store.decrementItemQuantity(list.name, $event)"
-    @removeItem="store.removeItemFromList(list.name, $event)"
-    @shopping="goToShopping(list.name)"
+    @remove="store.removeList(name)"
+    @clearAll="store.clearList(name)"
+    @clearBought="store.clearBoughtFromList(name)"
+    @newItem="store.addItemToList(name, $event)"
+    @increment="store.incrementItemQuantity(name, $event)"
+    @decrement="store.decrementItemQuantity(name, $event)"
+    @removeItem="store.removeItemFromList(name, $event)"
+    @shopping="goToShopping(name)"
   ></ListComponent>
 </template>
 
