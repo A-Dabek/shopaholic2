@@ -7,6 +7,7 @@
           v-model="name"
           type="text"
           placeholder="List name"
+          required
         />
       </p>
       <p class="control">

@@ -8,6 +8,7 @@
         v-model="name"
         type="text"
         placeholder="Name"
+        required
       />
     </div>
     <div class="field is-grouped">
@@ -17,6 +18,7 @@
           v-model="quantity"
           type="number"
           placeholder="Quantity"
+          required
         />
       </div>
       <div class="control">
