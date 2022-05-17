@@ -102,16 +102,8 @@ export const usePlanningStore = defineStore({
         })),
       }));
     },
-    buyItem(itemName: string) {
-      this.boughtItemsNames = [...this.boughtItemsNames, itemName];
-    },
-    undoBuyingItem(itemName: string) {
-      this.boughtItemsNames = this.boughtItemsNames.filter(
-        item => item !== itemName
-      );
-    },
-    resetBuying() {
-      this.boughtItemsNames = [];
+    setBoughtItems(boughtItemsNames: string[]) {
+      this.boughtItemsNames = [...boughtItemsNames];
     },
   },
 });
