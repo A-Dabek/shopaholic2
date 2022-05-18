@@ -33,8 +33,8 @@ interface Props {
 defineProps<Props>();
 
 interface Emits {
-  (e: 'buy'): void;
-  (e: 'undo'): void;
+  (e: 'buy', name: string): void;
+  (e: 'undo', name: string): void;
 }
 const emits = defineEmits<Emits>();
 </script>
