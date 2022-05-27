@@ -1,12 +1,12 @@
 <template>
-  <div class="box content">
-    <div class="columns is-mobile">
-      <div class="column">
-        <h1 class="title is-5">{{ name }}</h1>
+  <div class="box content mb-2">
+    <div class="columns is-mobile my-0">
+      <div class="column py-0">
+        <h1 class="title is-5 my-0">{{ name }}</h1>
       </div>
-      <div class="column is-narrow">
+      <div class="column py-0 is-narrow">
         <button
-          class="button is-white is-rounded"
+          class="button py-0 is-white is-rounded"
           @click="isOptionsOpen = !isOptionsOpen"
         >
           {{ isOptionsOpen ? 'Back' : 'Options' }}
