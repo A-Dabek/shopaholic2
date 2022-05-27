@@ -1,6 +1,10 @@
 <template>
-  <main class="container is-max-widescreen p-1">
-    <RouterView />
+  <main class="container p-1">
+    <div class="columns is-centered">
+      <div class="column is-one-third-desktop is-half-tablet">
+        <RouterView />
+      </div>
+    </div>
   </main>
 </template>
 
