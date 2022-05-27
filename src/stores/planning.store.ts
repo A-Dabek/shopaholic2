@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import type { ShoppingItem, ShoppingList } from '@/types';
 import { cloudStore } from '@/stores/firebase.store';
+import type { ShoppingItem, ShoppingList } from '@/types';
+import { defineStore } from 'pinia';
 
 export const usePlanningStore = defineStore({
   id: 'planning',
@@ -10,10 +10,14 @@ export const usePlanningStore = defineStore({
     boughtItemsNames: [] as string[],
   }),
   getters: {
-    orderedListNames(state) {
-      const listNames = [...state.listNames];
-      listNames.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
-      return listNames.map(ln => ln.name);
+    orderedLists(state) {
+      const lists: ShoppingList[] = [...state.listNames];
+      lists.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+      return lists;
+    },
+    orderedListNames() {
+      const lists: ShoppingList[] = this.orderedLists;
+      return lists.map(list => list.name);
     },
     listItems(state) {
       return (listName: string) => state.itemsPerList[listName] || [];
@@ -40,6 +44,26 @@ export const usePlanningStore = defineStore({
     },
     addItemToList(listName: string, item: ShoppingItem) {
       cloudStore.setItem(listName, item);
+    },
+    moveListUp(listName: string) {
+      const listIndex = this.orderedLists.findIndex(
+        list => list.name === listName
+      );
+      if (listIndex === 0) return;
+      cloudStore.updateList(
+        listName,
+        this.orderedLists[listIndex - 1].timestamp - 1
+      );
+    },
+    moveListDown(listName: string) {
+      const listIndex = this.orderedLists.findIndex(
+        list => list.name === listName
+      );
+      if (listIndex === this.orderedLists.length - 1) return;
+      cloudStore.updateList(
+        listName,
+        this.orderedLists[listIndex + 1].timestamp + 1
+      );
     },
     removeItemFromList(listName: string, itemName: string) {
       cloudStore.deleteItem(listName, itemName);

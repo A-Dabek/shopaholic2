@@ -15,12 +15,15 @@
     </div>
     <ListOptions
       v-if="isOptionsOpen"
+      class="pt-1"
       @remove="
         emits('remove');
         expanded = '';
       "
       @clearAll="onClearAll"
       @clearBought="onClearBought"
+      @moveUp="onMoveUp"
+      @moveDown="onMoveDown"
     />
     <ListItemForm
       v-else-if="isFormOpen"
@@ -86,6 +89,8 @@ interface Emits {
   (e: 'clearAll'): void;
   (e: 'clearBought'): void;
   (e: 'remove'): void;
+  (e: 'moveUp'): void;
+  (e: 'moveDown'): void;
   (e: 'increment', item: string): void;
   (e: 'decrement', item: string): void;
   (e: 'removeItem', item: string): void;
@@ -104,6 +109,18 @@ function onClearAll() {
 
 function onClearBought() {
   emits('clearBought');
+  isOptionsOpen.value = false;
+  expanded.value = '';
+}
+
+function onMoveUp() {
+  emits('moveUp');
+  isOptionsOpen.value = false;
+  expanded.value = '';
+}
+
+function onMoveDown() {
+  emits('moveDown');
   isOptionsOpen.value = false;
   expanded.value = '';
 }

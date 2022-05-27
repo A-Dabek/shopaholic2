@@ -18,6 +18,8 @@
     @remove="cStore.removeList(name)"
     @clearAll="store.clearList(name)"
     @clearBought="store.clearBoughtFromList(name)"
+    @moveUp="store.moveListUp(name)"
+    @moveDown="store.moveListDown(name)"
     @newItem="store.addItemToList(name, $event)"
     @increment="store.incrementItemQuantity(name, $event)"
     @decrement="store.decrementItemQuantity(name, $event)"

@@ -1,3 +1,4 @@
+import type { ShoppingItem, ShoppingList } from '@/types';
 import { initializeApp } from 'firebase/app';
 import {
   collection,
@@ -7,7 +8,6 @@ import {
   onSnapshot,
   setDoc,
 } from 'firebase/firestore';
-import type { ShoppingItem, ShoppingList } from '@/types';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCgY5DET3HhstK6MVtciRXAqK_c1aC6vdU',
@@ -47,6 +47,9 @@ export const cloudStore = {
   },
   async addList(name: string) {
     await setDoc(doc(db, 'lists', name), { timestamp: new Date().getTime() });
+  },
+  async updateList(name: string, timestamp: number) {
+    await setDoc(doc(db, 'lists', name), { timestamp });
   },
   async removeList(name: string) {
     await deleteDoc(doc(db, 'lists', name));
