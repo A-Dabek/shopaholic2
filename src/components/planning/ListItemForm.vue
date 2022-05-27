@@ -12,17 +12,19 @@
       />
     </div>
     <div class="field is-grouped">
-      <div class="control is-expanded">
+      <div class="control is-expandedl">
         <input
-          class="input"
+          class="input is-small"
           v-model="quantity"
           type="number"
           placeholder="Quantity"
+          step="0.01"
+          min="0"
           required
         />
       </div>
       <div class="control">
-        <div class="select">
+        <div class="select is-small">
           <select v-model="quantityType">
             <option v-for="type in quantityTypes" :key="type" :value="type">
               {{ type }}
@@ -41,6 +43,7 @@
       <div class="control">
         <textarea
           class="textarea"
+          rows="2"
           v-model="description"
           placeholder="Description"
         ></textarea>
