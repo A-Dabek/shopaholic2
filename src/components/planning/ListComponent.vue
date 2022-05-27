@@ -22,6 +22,7 @@
     <ListItemForm
       v-else-if="isFormOpen"
       @newItem="onNewItem"
+      @saveAndNext="onSaveAndNext"
       @cancel="isFormOpen = false"
     />
     <div v-else>
@@ -95,6 +96,10 @@ let isFormOpen = ref(false);
 function onNewItem(item: ShoppingItem) {
   emits('newItem', item);
   isFormOpen.value = false;
+}
+
+function onSaveAndNext(item: ShoppingItem) {
+  emits('newItem', item);
 }
 
 let expanded = ref('');

@@ -50,8 +50,11 @@
       </div>
     </div>
     <div class="buttons is-justify-content-end">
-      <button class="button is-white" @click="onCancel">Back</button>
+      <button class="button is-white" @click="emits('cancel')">Back</button>
       <button class="button is-primary" type="submit">Save</button>
+      <button class="button is-primary" @click="onSaveAndNext">
+        Save & Next
+      </button>
     </div>
   </form>
 </template>
@@ -62,6 +65,7 @@ import type { QuantityType, ShoppingItem } from '@/types';
 
 interface Emits {
   (e: 'newItem', item: ShoppingItem): void;
+  (e: 'saveAndNext', item: ShoppingItem): void;
   (e: 'cancel'): void;
 }
 const emits = defineEmits<Emits>();
@@ -78,23 +82,28 @@ onMounted(() => {
   nameInput.value?.focus();
 });
 
-function onSubmit() {
-  emits('newItem', {
+function getNewItem() {
+  const newItem = {
     name: name.value,
     description: description.value,
     quantity: quantity.value,
     quantityType: quantityType.value,
     timestamp: new Date().getTime(),
     urgent: urgent.value,
-  });
+  };
   name.value = '';
   description.value = '';
   quantity.value = 1;
   quantityType.value = 'x';
   urgent.value = false;
+  return newItem;
 }
 
-function onCancel() {
-  emits('cancel');
+function onSubmit() {
+  emits('newItem', getNewItem());
+}
+
+function onSaveAndNext() {
+  emits('saveAndNext', getNewItem());
 }
 </script>
