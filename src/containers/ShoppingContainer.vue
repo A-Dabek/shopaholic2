@@ -1,11 +1,11 @@
 <template>
   <div class="content">
     <div class="buttons is-justify-content-space-between">
-      <button class="button is-primary" @click="router.push('/')">
-        Planning
-      </button>
       <button class="button is-warning" @click="store.resetBuying()">
         Reset
+      </button>
+      <button class="button is-primary" @click="router.push('/')">
+        Planning
       </button>
     </div>
   </div>

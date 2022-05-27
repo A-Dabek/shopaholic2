@@ -1,6 +1,13 @@
 <template>
-  <div class="column">
-    <ListForm @newList="cStore.addList"></ListForm>
+  <div class="columns is-mobile">
+    <div class="column is-narrow">
+      <button class="button is-warning" @click="store.resetBuying()">
+        Reset
+      </button>
+    </div>
+    <div class="column">
+      <ListForm @newList="cStore.addList"></ListForm>
+    </div>
   </div>
   <ListComponent
     v-for="name in store.orderedListNames"
