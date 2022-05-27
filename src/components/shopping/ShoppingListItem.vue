@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li class="py-1">
     <div class="columns is-mobile is-multiline is-gapless">
       <div class="column">
         <span

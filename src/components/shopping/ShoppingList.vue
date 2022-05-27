@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <ol class="block">
+    <ol>
       <ShoppingListItem
         v-for="item of itemsToBuy"
         :key="item.name"
@@ -10,7 +10,7 @@
       />
     </ol>
 
-    <ol>
+    <ol class="mt-2">
       <ShoppingListItem
         v-for="item of itemsBought"
         :key="item.name"
