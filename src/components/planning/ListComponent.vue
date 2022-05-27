@@ -15,7 +15,10 @@
     </div>
     <ListOptions
       v-if="isOptionsOpen"
-      @remove="emits('remove')"
+      @remove="
+        emits('remove');
+        expanded = '';
+      "
       @clearAll="onClearAll"
       @clearBought="onClearBought"
     />
@@ -40,10 +43,22 @@
         />
       </ol>
       <div class="buttons is-justify-content-space-between">
-        <button class="button is-black is-rounded" @click="emits('shopping')">
+        <button
+          class="button is-black is-rounded"
+          @click="
+            emits('shopping');
+            expanded = '';
+          "
+        >
           Shopping
         </button>
-        <button class="button is-primary is-rounded" @click="isFormOpen = true">
+        <button
+          class="button is-primary is-rounded"
+          @click="
+            isFormOpen = true;
+            expanded = '';
+          "
+        >
           Add
         </button>
       </div>
@@ -84,22 +99,26 @@ let isOptionsOpen = ref(false);
 function onClearAll() {
   emits('clearAll');
   isOptionsOpen.value = false;
+  expanded.value = '';
 }
 
 function onClearBought() {
   emits('clearBought');
   isOptionsOpen.value = false;
+  expanded.value = '';
 }
 
 let isFormOpen = ref(false);
 
 function onNewItem(item: ShoppingItem) {
   emits('newItem', item);
+  expanded.value = '';
   isFormOpen.value = false;
 }
 
 function onSaveAndNext(item: ShoppingItem) {
   emits('newItem', item);
+  expanded.value = '';
 }
 
 let expanded = ref('');

@@ -1,6 +1,9 @@
 <template>
   <li>
-    <div class="columns is-mobile is-multiline is-gapless">
+    <div
+      class="columns is-mobile is-multiline is-gapless"
+      :class="{ box: expanded }"
+    >
       <div class="column">
         <span
           :class="{
@@ -20,7 +23,7 @@
         <small>{{ item.description }}</small>
       </div>
       <template v-if="expanded">
-        <div class="column">
+        <div class="column mt-1">
           <button class="button" @click.stop="emits('remove')">x</button>
         </div>
         <div class="column is-narrow">
