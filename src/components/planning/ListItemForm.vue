@@ -80,6 +80,7 @@ let urgent = ref(false);
 
 onMounted(() => {
   nameInput.value?.focus();
+  nameInput.value?.scrollIntoView({ behavior: 'smooth' });
 });
 
 function getNewItem() {
