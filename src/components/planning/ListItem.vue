@@ -24,7 +24,13 @@
       </div>
       <template v-if="expanded">
         <div class="column mt-1">
-          <button class="button" @click.stop="emits('remove')">❌</button>
+          <button
+            class="button"
+            :class="{ 'is-danger': removalPrompt }"
+            @click.stop="onRemove"
+          >
+            ❌
+          </button>
         </div>
         <div class="column mt-1">
           <button class="button" @click.stop="emits('edit')">✏️</button>
@@ -42,7 +48,7 @@
 
 <script setup lang="ts">
 import type { ShoppingItem } from '@/types';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
   item: ShoppingItem;
@@ -58,6 +64,7 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
+let removalPrompt = ref(false);
 
 function daysBetween(date1: Date, date2: Date) {
   let difference = date1.getTime() - date2.getTime();
@@ -71,6 +78,15 @@ const daysPassed = computed(() => {
 
   return daysBetween(todayDate, itemDate);
 });
+
+function onRemove() {
+  if (removalPrompt.value) {
+    emits('remove');
+    removalPrompt.value = false;
+  } else {
+    removalPrompt.value = true;
+  }
+}
 </script>
 
 <style scoped>
