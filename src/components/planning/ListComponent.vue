@@ -27,9 +27,10 @@
     />
     <ListItemForm
       v-else-if="isFormOpen"
+      :default="itemToEdit"
       @newItem="onNewItem"
       @saveAndNext="onSaveAndNext"
-      @cancel="isFormOpen = false"
+      @cancel="onFormCancel"
     />
     <div v-else>
       <ol class="is-full mx-0 mt-0">
@@ -43,6 +44,7 @@
           @increment="emits('increment', item.name)"
           @decrement="emits('decrement', item.name)"
           @remove="emits('removeItem', item.name)"
+          @edit="onEditItem(item)"
         />
       </ol>
       <div class="buttons is-justify-content-space-between">
@@ -100,6 +102,7 @@ interface Emits {
 const emits = defineEmits<Emits>();
 
 let isOptionsOpen = ref(false);
+let itemToEdit = ref<ShoppingItem | undefined>();
 
 function onClearAll() {
   emits('clearAll');
@@ -131,11 +134,24 @@ function onNewItem(item: ShoppingItem) {
   emits('newItem', item);
   expanded.value = '';
   isFormOpen.value = false;
+  itemToEdit.value = undefined;
 }
 
 function onSaveAndNext(item: ShoppingItem) {
   emits('newItem', item);
   expanded.value = '';
+  itemToEdit.value = undefined;
+}
+
+function onEditItem(item: ShoppingItem) {
+  itemToEdit.value = { ...item };
+  expanded.value = '';
+  isFormOpen.value = true;
+}
+
+function onFormCancel() {
+  itemToEdit.value = undefined;
+  isFormOpen.value = false;
 }
 
 let expanded = ref('');

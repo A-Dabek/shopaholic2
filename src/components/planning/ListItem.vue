@@ -24,12 +24,15 @@
       </div>
       <template v-if="expanded">
         <div class="column mt-1">
-          <button class="button" @click.stop="emits('remove')">x</button>
+          <button class="button" @click.stop="emits('remove')">❌</button>
         </div>
-        <div class="column is-narrow">
+        <div class="column mt-1">
+          <button class="button" @click.stop="emits('edit')">✏️</button>
+        </div>
+        <div class="column is-narrow mt-1">
           <div class="buttons">
-            <button class="button" @click.stop="emits('increment')">+</button>
-            <button class="button" @click.stop="emits('decrement')">-</button>
+            <button class="button" @click.stop="emits('increment')">➕</button>
+            <button class="button" @click.stop="emits('decrement')">➖</button>
           </div>
         </div>
       </template>
@@ -50,6 +53,7 @@ interface Emits {
   (e: 'increment'): void;
   (e: 'decrement'): void;
   (e: 'remove'): void;
+  (e: 'edit'): void;
 }
 
 const props = defineProps<Props>();

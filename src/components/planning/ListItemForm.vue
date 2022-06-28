@@ -8,6 +8,7 @@
         v-model="name"
         type="text"
         placeholder="Name"
+        :disabled="!nameEnabled"
         required
       />
     </div>
@@ -52,7 +53,7 @@
     <div class="buttons is-justify-content-end">
       <button class="button is-white" @click="emits('cancel')">Back</button>
       <button class="button is-primary" type="submit">Save</button>
-      <button class="button is-primary" @click="onSaveAndNext">
+      <button class="button is-primary" type="button" @click="onSaveAndNext">
         Save & Next
       </button>
     </div>
@@ -63,6 +64,10 @@
 import { onMounted, ref } from 'vue';
 import type { QuantityType, ShoppingItem } from '@/types';
 
+interface Props {
+  default?: ShoppingItem;
+}
+const props = defineProps<Props>();
 interface Emits {
   (e: 'newItem', item: ShoppingItem): void;
   (e: 'saveAndNext', item: ShoppingItem): void;
@@ -70,6 +75,7 @@ interface Emits {
 }
 const emits = defineEmits<Emits>();
 
+let nameEnabled = ref(true);
 let nameInput = ref<HTMLInputElement>();
 let quantityTypes = ref<QuantityType[]>(['x', 'kg', 'g', 'ml', 'l']);
 let name = ref('');
@@ -79,6 +85,15 @@ let quantityType = ref<QuantityType>('x');
 let urgent = ref(false);
 
 onMounted(() => {
+  nameEnabled.value = true;
+  if (props.default) {
+    nameEnabled.value = false;
+    name.value = props.default?.name;
+    description.value = props.default?.description;
+    quantity.value = props.default?.quantity;
+    quantityType.value = props.default?.quantityType;
+    urgent.value = props.default?.urgent;
+  }
   nameInput.value?.focus();
   nameInput.value?.scrollIntoView({ behavior: 'smooth' });
 });
@@ -102,9 +117,11 @@ function getNewItem() {
 
 function onSubmit() {
   emits('newItem', getNewItem());
+  nameEnabled.value = true;
 }
 
 function onSaveAndNext() {
   emits('saveAndNext', getNewItem());
+  nameEnabled.value = true;
 }
 </script>
