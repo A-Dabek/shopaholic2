@@ -1,7 +1,11 @@
 <template>
   <div class="columns is-mobile">
     <div class="column is-narrow">
-      <button class="button is-warning" @click="store.resetBuying()">
+      <button
+        class="button is-warning"
+        :class="{ 'is-danger': !!store.boughtItemsNames.length }"
+        @click="store.resetBuying()"
+      >
         Reset
       </button>
     </div>
@@ -31,9 +35,9 @@
 <script setup lang="ts">
 import ListComponent from '@/components/planning/ListComponent.vue';
 import ListForm from '@/components/planning/ListForm.vue';
+import { cloudStore } from '@/stores/firebase.store';
 import { usePlanningStore } from '@/stores/planning.store';
 import { useRouter } from 'vue-router';
-import { cloudStore } from '@/stores/firebase.store';
 
 let store = usePlanningStore();
 const router = useRouter();

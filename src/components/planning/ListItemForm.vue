@@ -18,10 +18,9 @@
           class="input is-small"
           v-model="quantity"
           type="number"
-          placeholder="Quantity"
+          placeholder="1"
           step="0.01"
           min="0"
-          required
         />
       </div>
       <div class="control">
@@ -61,8 +60,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import type { QuantityType, ShoppingItem } from '@/types';
+import { onMounted, ref } from 'vue';
 
 interface Props {
   default?: ShoppingItem;
@@ -80,7 +79,7 @@ let nameInput = ref<HTMLInputElement>();
 let quantityTypes = ref<QuantityType[]>(['x', 'kg', 'g', 'ml', 'l']);
 let name = ref('');
 let description = ref('');
-let quantity = ref(1);
+let quantity = ref<number | undefined>();
 let quantityType = ref<QuantityType>('x');
 let urgent = ref(false);
 
@@ -102,14 +101,14 @@ function getNewItem() {
   const newItem = {
     name: name.value,
     description: description.value,
-    quantity: quantity.value,
+    quantity: quantity.value || 1,
     quantityType: quantityType.value,
     timestamp: new Date().getTime(),
     urgent: urgent.value,
   };
   name.value = '';
   description.value = '';
-  quantity.value = 1;
+  quantity.value = undefined;
   quantityType.value = 'x';
   urgent.value = false;
   return newItem;
